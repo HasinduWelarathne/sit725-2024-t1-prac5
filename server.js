@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require("express");
 const app = express();
 const cors = require("cors");
@@ -11,13 +12,11 @@ app.use(cors());
 
 const port = process.env.PORT || 5500;
 
-// Connect to DB
-dbConnection.connectDB((err) => {
-    if (err) {
-        console.log('Error connecting to DB:', err);
-        process.exit(1);
+app.use((req, res, next) => {
+    if (dbConnection.getCollection()) {
+        next();  // If collection is available, proceed to next middleware or route handler
     } else {
-        console.log('MongoDB Connected');
+        res.status(500).json({ message: 'Error connecting to DB' });  // Send error response if collection is not available
     }
 });
 

@@ -1,5 +1,6 @@
 const projectModel = require('../models/projectModel');
 
+
 const getProjects = (req, res) => {
     projectModel.getProjects((err, result) => {
         if (err) {
